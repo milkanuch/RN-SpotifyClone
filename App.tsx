@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text } from 'react-native';
 
-const App = () => <Text>Spotify Clone App</Text>;
+import AppNavigation from './src/navigation/AppNavigation/AppNavigation';
+
+const App = () => <AppNavigation />;
 
 export default App;
