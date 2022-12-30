@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import HomeScreen from '../../screens/HomeScreen/HomeScreen';
+import HomeScreen from 'screens/HomeScreen/HomeScreen';
 
 import { HOME_SCREEN_OPTIONS } from './homeStackNavigation.settings';
 import {
