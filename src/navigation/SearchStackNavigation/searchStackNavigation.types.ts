@@ -1,7 +1,7 @@
-export enum SeacrhStackNavigationTypes {
+export enum SearchStackNavigationTypes {
   SearchScreen = 'SearchScreen',
 }
 
-export type SeacrhStackNavigationParamsList = {
-  [SeacrhStackNavigationTypes.SearchScreen]: undefined;
+export type SearchStackNavigationParamsList = {
+  [SearchStackNavigationTypes.SearchScreen]: undefined;
 };

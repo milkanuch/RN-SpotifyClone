@@ -2,9 +2,9 @@ import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import HomeStackNavigation from '../HomeStackNavigation/HomeStackNavigation';
-import LibraryStackNavigation from '../LibraryStackNavigation/LibraryStackNavigation';
-import SearchStackNavigation from '../SearchStackNavigation/SearchStackNavigation';
+import HomeStackNavigation from 'navigation/HomeStackNavigation/HomeStackNavigation';
+import LibraryStackNavigation from 'navigation/LibraryStackNavigation/LibraryStackNavigation';
+import SearchStackNavigation from 'navigation/SearchStackNavigation/SearchStackNavigation';
 
 import {
   BOTTOM_TAB_NAVIGATOR_OPTIONS,

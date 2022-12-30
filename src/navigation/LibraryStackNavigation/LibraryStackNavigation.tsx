@@ -11,7 +11,8 @@ import {
 } from './libraryStackNavigation.types';
 
 const Stack = createStackNavigator<LibraryStackNavigationParamsList>();
-const YourLibraryStackNavigation = () => {
+
+const LibraryStackNavigation = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -23,4 +24,4 @@ const YourLibraryStackNavigation = () => {
   );
 };
 
-export default YourLibraryStackNavigation;
+export default LibraryStackNavigation;

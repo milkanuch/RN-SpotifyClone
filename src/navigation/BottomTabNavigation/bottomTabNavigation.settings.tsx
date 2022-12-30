@@ -1,8 +1,9 @@
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 
-import Icon from '../../components/Icon/Icon';
-import { COLORS } from '../../constants/colors';
-import { iconImages } from '../../constants/icons';
+import Icon from 'components/Icon/Icon';
+
+import { COLORS } from 'constants/colors';
+import { iconImages } from 'constants/icons';
 
 export const HOME_STACK_OPTIONS: BottomTabNavigationOptions = {
   headerShown: false,
@@ -17,7 +18,7 @@ export const SEARCH_STACK_OPTIONS: BottomTabNavigationOptions = {
   tabBarLabel: 'Search',
   tabBarIcon: ({ focused }) => (
     <Icon
-      source={focused ? iconImages.StrokedSearch : iconImages.FilledSearch}
+      source={focused ? iconImages.FilledSearch : iconImages.StrokedSearch}
     />
   ),
 };
