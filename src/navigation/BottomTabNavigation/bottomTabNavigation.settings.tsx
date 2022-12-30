@@ -3,6 +3,7 @@ import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import Icon from 'components/Icon/Icon';
 
 import { COLORS } from 'constants/colors';
+import { OPEN_SANS_SEMI_BOLD } from 'constants/fonts';
 import { iconImages } from 'constants/icons';
 
 export const HOME_STACK_OPTIONS: BottomTabNavigationOptions = {
@@ -38,6 +39,10 @@ export const BOTTOM_TAB_NAVIGATOR_OPTIONS: BottomTabNavigationOptions = {
     backgroundColor: COLORS.darkGray,
     borderTopColor: COLORS.black,
     paddingBottom: 5,
+  },
+  tabBarLabelStyle: {
+    fontFamily: OPEN_SANS_SEMI_BOLD,
+    fontSize: 12,
   },
   tabBarActiveTintColor: COLORS.white,
 };
