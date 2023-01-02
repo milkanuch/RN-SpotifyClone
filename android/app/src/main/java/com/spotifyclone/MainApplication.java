@@ -10,6 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
 import com.spotifyclone.newarchitecture.MainApplicationReactNativeHost;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
