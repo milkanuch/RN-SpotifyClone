@@ -13,6 +13,8 @@
       "navigation/*": ["src/navigation/*"],
       "screens/*": ["src/screens/*"],
       "assets/*": ["src/assets/*"],
+      "services/*": ["src/services/*"],
+      "types/*": ["src/types/*"],
     }
   },
   "include": ["src/**/*"]
