@@ -1,15 +1,17 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { View } from 'react-native';
 
 import HomeScreenTitle from './HomeScreenTitle/HomeScreenTitle';
+import LastPlayedAlbums from './LastPlayedAlbums/LastPlayedAlbums';
 
 import styles from './homeScreen.styles';
 
 const HomeScreen = () => {
   return (
-    <ScrollView style={styles.screen}>
+    <View style={styles.screen}>
       <HomeScreenTitle />
-    </ScrollView>
+      <LastPlayedAlbums />
+    </View>
   );
 };
 
