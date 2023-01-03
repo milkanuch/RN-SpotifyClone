@@ -1,6 +1,6 @@
-import { ImageSourcePropType } from 'react-native';
+import { ImageSourcePropType, TouchableOpacityProps } from 'react-native';
 
 export interface IconButtonProps {
   iconName: ImageSourcePropType;
-  onPress: () => void;
+  onPress: TouchableOpacityProps['onPress'];
 }
