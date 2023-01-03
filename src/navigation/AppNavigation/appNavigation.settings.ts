@@ -6,6 +6,6 @@ export const appTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: COLORS.darkGray,
+    background: COLORS.black,
   },
 };
