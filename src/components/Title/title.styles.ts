@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { COLORS } from 'constants/colors';
-import { OPEN_SANS_BOLD } from 'constants/fonts';
+import { OPEN_SANS } from 'constants/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: COLORS.white,
-    fontFamily: OPEN_SANS_BOLD,
+    fontFamily: OPEN_SANS.bold,
     fontSize: 24,
   },
 });

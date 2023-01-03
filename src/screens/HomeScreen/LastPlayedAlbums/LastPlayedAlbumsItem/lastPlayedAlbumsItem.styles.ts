@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { COLORS } from 'constants/colors';
-import { OPEN_SANS_BOLD } from 'constants/fonts';
+import { OPEN_SANS } from 'constants/fonts';
 
 const BORDER_RADIUS = 4;
 
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   title: {
     color: COLORS.white,
     flexShrink: 1,
-    fontFamily: OPEN_SANS_BOLD,
+    fontFamily: OPEN_SANS.bold,
     padding: 5,
   },
 });
