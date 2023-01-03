@@ -1,3 +1,3 @@
-export const noonGreeting = 'Good Morning!';
+export const MORNING_GREETING = 'Good Morning!';
 
-export const morningGreeting = 'Good Afternoon!';
+export const NOON_GREETING = 'Good Afternoon!';
