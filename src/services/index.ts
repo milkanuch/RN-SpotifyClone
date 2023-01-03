@@ -20,7 +20,7 @@ export const getAlbums = async () => {
 
 export const getLastPlayedAlbums = async () => {
   try {
-    const { data } = await axios.get<LastPlayedAlbumsResponseProps>(
+    const { data } = await axios.get<LastPlayedAlbumsResponseProps[]>(
       `${Config.API_URL}/albums/lastplayed`,
     );
     return data;
