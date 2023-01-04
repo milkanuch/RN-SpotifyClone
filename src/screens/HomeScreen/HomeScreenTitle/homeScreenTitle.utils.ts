@@ -1,7 +1,9 @@
-export const getGreetMessageByTime = () => {
+import { MORNING_GREETING, NOON_GREETING } from './homeScreenTitle.settings';
+
+export const getGreetingMessageByTime = () => {
   const currentHour = new Date().getHours();
 
   return currentHour >= 2 && currentHour < 12
-    ? 'Good Morning!'
-    : 'Good Afternoon!';
+    ? MORNING_GREETING
+    : NOON_GREETING;
 };

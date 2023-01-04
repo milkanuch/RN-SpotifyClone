@@ -1,6 +1,6 @@
-import { ViewStyle } from 'react-native';
+import { TextStyle } from 'react-native';
 
 export interface TitleProps {
   text: string;
-  style?: ViewStyle;
+  textStyle?: TextStyle;
 }
