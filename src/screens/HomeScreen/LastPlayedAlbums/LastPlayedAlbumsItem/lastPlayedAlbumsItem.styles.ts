@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { COLORS } from 'constants/colors';
 import { OPEN_SANS } from 'constants/fonts';
+import { responsiveWidth } from 'constants/scale';
 
 const BORDER_RADIUS = 4;
 
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS,
     flexDirection: 'row',
     margin: 5,
-    width: '48%',
+    width: responsiveWidth(46),
   },
   image: {
     borderBottomLeftRadius: BORDER_RADIUS,
