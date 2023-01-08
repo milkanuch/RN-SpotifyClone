@@ -8,10 +8,12 @@ import { IconButtonProps } from './iconButton.types';
 const IconButton: FC<IconButtonProps> = ({
   iconName,
   onPress: handlePress,
+  containerStyle,
+  iconStyle,
 }) => {
   return (
-    <TouchableOpacity onPress={handlePress}>
-      <Icon source={iconName} />
+    <TouchableOpacity onPress={handlePress} style={containerStyle}>
+      <Icon iconStyle={iconStyle} source={iconName} />
     </TouchableOpacity>
   );
 };

@@ -13,10 +13,10 @@ export interface LastPlayedAlbumsResponseProps {
   timeStamp: string;
 }
 
-export interface AlbumDetailProps {
+export interface AlbumDetailResponseProps {
   id: number;
   name: string;
-  numberOfLikes: string;
+  numberOfLikes: number;
   imageUri: string;
   artistsHeadline: string;
   songs: SongProps[];

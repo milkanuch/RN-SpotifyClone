@@ -1,3 +1,5 @@
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+
 export enum BottomTabNavigationTypes {
   HomeStack = 'HomeStack',
   SearchStack = 'SearchStack',
@@ -9,3 +11,8 @@ export type BottomTabNavigationParamsList = {
   [BottomTabNavigationTypes.SearchStack]: undefined;
   [BottomTabNavigationTypes.LibraryStack]: undefined;
 };
+
+export type BottomTabProps = BottomTabNavigationProp<
+  BottomTabNavigationParamsList,
+  BottomTabNavigationTypes.HomeStack
+>;

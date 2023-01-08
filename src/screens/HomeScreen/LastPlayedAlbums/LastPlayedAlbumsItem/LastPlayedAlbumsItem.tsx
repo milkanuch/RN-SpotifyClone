@@ -1,19 +1,28 @@
 import React, { FC } from 'react';
 import { TouchableOpacity, Text, Image } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+
 import { LastPlayedAlbumsItemProps } from './lastPlayedAlbums.types';
 import styles from './lastPlayedAlbumsItem.styles';
+import {
+  HomeStackNavigationTypes,
+  LastPlayedAlbumsNavigationProps,
+} from 'navigation/HomeStackNavigation/homeStackNavigation.types';
 
 const LastPlayedAlbumsItem: FC<LastPlayedAlbumsItemProps> = ({
   imageUri,
   title,
+  albumId,
 }) => {
+  const { navigate } = useNavigation<LastPlayedAlbumsNavigationProps>();
+
   const imageSource = {
     uri: imageUri,
   };
 
   const handleAlbumPress = () => {
-    //TODO: make navigation to album screen
+    navigate(HomeStackNavigationTypes.AlbumScreen, { id: albumId });
   };
 
   return (
