@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Config } from 'react-native-config';
 
 import {
+  AlbumDetailResponseProps,
   AlbumCategoriesResponseProps,
   LastPlayedAlbumsResponseProps,
   AlbumResponseProps,
@@ -37,5 +38,16 @@ export const getAlbumsCategories = async () => {
     return data;
   } catch {
     throw new Error('There are no albums categories');
+  }
+};
+
+export const getAlbumDetails = async () => {
+  try {
+    const { data } = await axios.get<AlbumDetailResponseProps[]>(
+      `${Config.API_URL}/albums/details`,
+    );
+    return data;
+  } catch {
+    throw new Error('There are no albums details');
   }
 };
