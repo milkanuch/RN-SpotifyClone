@@ -7,6 +7,7 @@ export const iconImages = {
   StrokedSearch: require('assets/icons/search/stroked_search.png'),
   FilledPlay: require('assets/icons/play/filled_play.png'),
   StrokePlay: require('assets/icons/play/stroked_play.png'),
+  GreenPlay: require('assets/icons/play/green_play.png'),
   FilledHeart: require('assets/icons/heart/filled_heart.png'),
   StrokedHeart: require('assets/icons/heart/stroked_heart.png'),
   Left: require('assets/icons/left/left.png'),
