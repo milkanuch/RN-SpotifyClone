@@ -12,7 +12,13 @@ import { numberOfColumns } from './lastPlayedAlbums.settings';
 
 const renderItem: ListRenderItem<LastPlayedAlbumsResponseProps> = ({
   item,
-}) => <LastPlayedAlbumsItem imageUri={item.imageUri} title={item.title} />;
+}) => (
+  <LastPlayedAlbumsItem
+    albumId={item.id}
+    imageUri={item.imageUri}
+    title={item.title}
+  />
+);
 
 const keyExtractor = (item: LastPlayedAlbumsResponseProps) =>
   item.id.toString();
