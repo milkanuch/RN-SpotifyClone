@@ -18,13 +18,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: SCREEN_PADDING,
   },
-  gradient: {
-    alignItems: 'center',
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-  },
   playIcon: {
     tintColor: undefined,
   },
