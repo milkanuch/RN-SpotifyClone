@@ -10,29 +10,26 @@ import Animated, {
 
 import IconButton from 'components/IconButton/IconButton';
 
-import { iconImages } from 'constants/icons';
-
-import {
-  OPACITY_INPUT_RANGE,
-  OPACITY_OUTPUT_RANGE,
-} from './albumHeader.settings';
-import styles from './albumHeader.styles';
-import { AlbumHeaderProps } from './albumHeader.types';
+import { OPACITY_INPUT_RANGE, OPACITY_OUTPUT_RANGE } from './header.settings';
+import styles from './header.styles';
+import { AlbumHeaderProps } from './header.types';
 import { AlbumNavigationHeaderProps } from 'navigation/HomeStackNavigation/homeStackNavigation.types';
 
-const AlbumHeader: FC<AlbumHeaderProps> = ({ title, scrollY }) => {
+const Header: FC<AlbumHeaderProps> = ({
+  title,
+  scrollY,
+  containerStyle,
+  iconName,
+}) => {
   const { goBack } = useNavigation<AlbumNavigationHeaderProps>();
 
   const animatedStyles = useAnimatedStyle(() => {
-    const opacity = interpolate(
-      scrollY.value,
-      OPACITY_INPUT_RANGE,
-      OPACITY_OUTPUT_RANGE,
-      {
-        extrapolateLeft: Extrapolation.CLAMP,
-        extrapolateRight: Extrapolation.IDENTITY,
-      },
-    );
+    const opacity = scrollY
+      ? interpolate(scrollY.value, OPACITY_INPUT_RANGE, OPACITY_OUTPUT_RANGE, {
+          extrapolateLeft: Extrapolation.CLAMP,
+          extrapolateRight: Extrapolation.IDENTITY,
+        })
+      : 1;
 
     return {
       opacity,
@@ -44,8 +41,8 @@ const AlbumHeader: FC<AlbumHeaderProps> = ({ title, scrollY }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <IconButton iconName={iconImages.Left} onPress={handleLeftPress} />
+    <View style={[styles.container, containerStyle]}>
+      <IconButton iconName={iconName} onPress={handleLeftPress} />
       <View style={styles.textContainer}>
         {title ? (
           <Animated.Text style={[styles.title, animatedStyles]}>
@@ -57,4 +54,4 @@ const AlbumHeader: FC<AlbumHeaderProps> = ({ title, scrollY }) => {
   );
 };
 
-export default AlbumHeader;
+export default Header;
