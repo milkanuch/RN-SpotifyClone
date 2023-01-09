@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { View, Text, Image } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import IconButton from 'components/IconButton/IconButton';
@@ -9,8 +10,14 @@ import { iconImages } from 'constants/icons';
 
 import styles from './albumSong.styles';
 import AlbumSongProps from './albumSong.types';
+import {
+  AppStackNavigationTypes,
+  SongNavigationProps,
+} from 'navigation/AppStackNavigation/appStackNavigator.types';
 
 const AlbumSong: FC<AlbumSongProps> = ({ imageUri, artist, title }) => {
+  const { navigate } = useNavigation<SongNavigationProps>();
+
   const imageSource = {
     uri: imageUri,
   };
@@ -20,7 +27,7 @@ const AlbumSong: FC<AlbumSongProps> = ({ imageUri, artist, title }) => {
   };
 
   const handleSongPlay = () => {
-    //TODO: add  song play
+    navigate(AppStackNavigationTypes.PlayerScreen);
   };
 
   return (
