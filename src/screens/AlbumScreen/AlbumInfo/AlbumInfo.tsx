@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import { View } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+
 import IconButton from 'components/IconButton/IconButton';
 
 import { iconImages } from 'constants/icons';
@@ -10,6 +12,10 @@ import AlbumTitle from '../AlbumTitle/AlbumTitle';
 
 import styles from './albumInfo.styles';
 import { AlbumInfoProps } from './albumInfo.types';
+import {
+  AppStackNavigationTypes,
+  SongNavigationProps,
+} from 'navigation/AppStackNavigation/appStackNavigator.types';
 
 const AlbumInfo: FC<AlbumInfoProps> = ({
   name,
@@ -17,6 +23,7 @@ const AlbumInfo: FC<AlbumInfoProps> = ({
   imageUri,
   scrollY,
 }) => {
+  const { navigate } = useNavigation<SongNavigationProps>();
   const handleHeartPress = () => {
     //TODO: add favorites albums
   };
@@ -26,7 +33,7 @@ const AlbumInfo: FC<AlbumInfoProps> = ({
   };
 
   const handlePlayPress = () => {
-    //TODO: add play press
+    navigate(AppStackNavigationTypes.PlayerScreen);
   };
 
   return (
