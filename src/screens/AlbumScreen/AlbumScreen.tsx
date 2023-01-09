@@ -5,9 +5,12 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 
+import Header from 'components/Header/Header';
+
+import { iconImages } from 'constants/icons';
+
 import { getAlbumDetails } from 'services/index';
 
-import AlbumHeader from './AlbumHeader/AlbumHeader';
 import AlbumInfo from './AlbumInfo/AlbumInfo';
 import AlbumSong from './AlbumSong/AlbumSong';
 import { getAlbumDetailsById } from './albumScreen.utils';
@@ -50,7 +53,11 @@ const AlbumScreen: FC<IAlbumScreenProps> = ({ route }) => {
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={[0]}
       style={styles.screen}>
-      <AlbumHeader scrollY={scrollY} title={albumDetails?.name} />
+      <Header
+        iconName={iconImages.Left}
+        scrollY={scrollY}
+        title={albumDetails?.name}
+      />
       {albumDetails ? (
         <>
           <AlbumInfo
