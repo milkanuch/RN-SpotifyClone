@@ -21,6 +21,8 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-native": "^4.0.0",
+    "expo": "^47.0.0",
+    "expo-av": "^13.0.2",
     "husky": "^8.0.3",
     "react": "18.1.0",
     "react-native": "0.70.6",
