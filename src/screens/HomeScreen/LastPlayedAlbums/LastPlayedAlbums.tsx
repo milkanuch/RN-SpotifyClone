@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { ActivityIndicator, FlatList, ListRenderItem } from 'react-native';
 
 import { getLastPlayedAlbums } from 'services/index';
 
@@ -9,6 +9,7 @@ import { prepareData } from './lastPlayedAlbums.utils';
 import { LastPlayedAlbumsResponseProps } from 'types/album';
 
 import { numberOfColumns } from './lastPlayedAlbums.settings';
+import styles from './lastPlayedAlbums.styles';
 
 const renderItem: ListRenderItem<LastPlayedAlbumsResponseProps> = ({
   item,
@@ -40,7 +41,7 @@ const LastPlayedAlbums = () => {
   }, [setAlbumData]);
 
   if (isLoading) {
-    return null;
+    return <ActivityIndicator style={styles.screen} />;
   }
 
   return (

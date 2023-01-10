@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Image, View } from 'react-native';
+import { ActivityIndicator, Image, View } from 'react-native';
 
 import Slider from '@react-native-community/slider';
 import { AVPlaybackStatus } from 'expo-av/build/AV';
@@ -119,7 +119,7 @@ const PlayerScreen = () => {
   };
 
   if (isLoading) {
-    return null;
+    return <ActivityIndicator style={styles.screen} />;
   }
 
   return (

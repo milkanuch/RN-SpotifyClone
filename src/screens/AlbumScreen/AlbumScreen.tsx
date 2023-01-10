@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 
 import Animated, {
   useAnimatedScrollHandler,
@@ -43,7 +44,7 @@ const AlbumScreen: FC<IAlbumScreenProps> = ({ route }) => {
   }, [setAlbumDetailData]);
 
   if (isLoading) {
-    return null;
+    return <ActivityIndicator style={styles.screen} />;
   }
 
   return (
