@@ -10,7 +10,8 @@ import Header from 'components/Header/Header';
 
 import { iconImages } from 'constants/icons';
 
-import { getAlbumDetails } from 'services/index';
+import { selectAlbumDetails } from 'store/albumDetailsSlice/albumDetails';
+import { useAppSelector } from 'store/index';
 
 import AlbumInfo from './AlbumInfo/AlbumInfo';
 import AlbumSong from './AlbumSong/AlbumSong';
@@ -25,15 +26,16 @@ const AlbumScreen: FC<IAlbumScreenProps> = ({ route }) => {
   const [albumDetails, setAlbumDetails] = useState<AlbumDetailResponseProps>();
   const [isLoading, setIsLoading] = useState(true);
 
+  const data = useAppSelector(selectAlbumDetails);
+
   const scrollY = useSharedValue(0);
 
   const { id } = route.params;
 
-  const setAlbumDetailData = useCallback(async () => {
-    const data = await getAlbumDetails();
+  const setAlbumDetailData = useCallback(() => {
     setAlbumDetails(getAlbumDetailsById(data, id));
     setIsLoading(false);
-  }, [id]);
+  }, [data, id]);
 
   const handleScroll = useAnimatedScrollHandler(event => {
     scrollY.value = event.contentOffset.y;
