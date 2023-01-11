@@ -10,6 +10,13 @@ import Animated, {
 
 import IconButton from 'components/IconButton/IconButton';
 
+import { useAppDispatch, useAppSelector } from 'store/index';
+import {
+  selectIsPlaying,
+  selectIsShown,
+  setIsWidgetShown,
+} from 'store/playlistSlice/playlist';
+
 import { OPACITY_INPUT_RANGE, OPACITY_OUTPUT_RANGE } from './header.settings';
 import styles from './header.styles';
 import { AlbumHeaderProps } from './header.types';
@@ -22,6 +29,10 @@ const Header: FC<AlbumHeaderProps> = ({
   iconName,
 }) => {
   const { goBack } = useNavigation<AlbumNavigationHeaderProps>();
+
+  const isPlaying = useAppSelector(selectIsPlaying);
+  const isWidgetShown = useAppSelector(selectIsShown);
+  const dispacth = useAppDispatch();
 
   const animatedStyles = useAnimatedStyle(() => {
     const opacity = scrollY
@@ -38,6 +49,7 @@ const Header: FC<AlbumHeaderProps> = ({
 
   const handleLeftPress = () => {
     goBack();
+    if (isPlaying && !isWidgetShown) dispacth(setIsWidgetShown(true));
   };
 
   return (
