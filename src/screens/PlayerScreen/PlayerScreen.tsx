@@ -11,30 +11,55 @@ import IconButton from 'components/IconButton/IconButton';
 import { COLORS } from 'constants/colors';
 import { iconImages } from 'constants/icons';
 
+import { useAppDispatch, useAppSelector } from 'store/index';
+import {
+  selectDuration,
+  selectIsPlaying,
+  selectIsRepeat,
+  selectPlaylist,
+  selectPlaylistTitle,
+  selectPosition,
+  selectSongIndex,
+  selectSound,
+  setDuration,
+  setIsPlaying,
+  setPosition,
+  setRepeat,
+  setSongIndex,
+  setSound,
+} from 'store/playlistSlice/playlist';
+
 import SongDuration from './SongDuration/SongDuration';
 import SongTitle from './SongTitle/SongTitle';
+import { getRandomSong } from './playerScreen.utils';
 
 import styles from './playerScreen.styles';
 
 const PlayerScreen = () => {
-  const [sound, setSound] = useState<Sound>();
+  const sound = useAppSelector(selectSound);
 
-  const [duration, setDuration] = useState<number | undefined>(0);
-  const [position, setPosition] = useState<number>(0);
+  const position = useAppSelector(selectPosition);
+  const duration = useAppSelector(selectDuration);
+  const isPlaying = useAppSelector(selectIsPlaying);
+  const playlist = useAppSelector(selectPlaylist);
+  const songIndex = useAppSelector(selectSongIndex);
+  const playlistTitle = useAppSelector(selectPlaylistTitle);
+
+  const repeat = useAppSelector(selectIsRepeat);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
-  const [repeat, setRepeat] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
 
   const imageSource = {
-    uri: 'https://i.scdn.co/image/ab67616d00001e02ea27a9e38db1ec66119356af',
+    uri: playlist[songIndex].imageUri,
   };
 
   const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
     if (status.isLoaded) {
-      setIsPlaying(status.isPlaying);
-      setDuration(status.durationMillis);
-      setPosition(status.positionMillis);
+      if (!status.isBuffering) dispatch(setIsPlaying(status.isPlaying));
+      dispatch(setDuration(status.durationMillis));
+      dispatch(setPosition(status.positionMillis));
     } else if (status.error) {
       throw new Error(status.error);
     }
@@ -48,10 +73,10 @@ const PlayerScreen = () => {
     try {
       const { sound: newSound } = await Sound.createAsync(
         require('assets/sound/once-twice-melody.mp3'),
-        { shouldPlay: true },
+        { shouldPlay: false },
         onPlaybackStatusUpdate,
       );
-      setSound(newSound);
+      dispatch(setSound(newSound));
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -70,30 +95,34 @@ const PlayerScreen = () => {
 
     if (isPlaying) {
       await sound.pauseAsync();
-      setIsPlaying(false);
+      dispatch(setIsPlaying(false));
     } else {
       await sound.playAsync();
-      setIsPlaying(true);
+      dispatch(setIsPlaying(true));
     }
   };
 
-  const handleChangeValue = async (value: number) => {
+  const handleChangeValue = (value: number) => {
     if (sound) {
-      setPosition(value);
-      await sound.setPositionAsync(value);
+      dispatch(setPosition(value));
+      sound.setPositionAsync(value);
     }
   };
 
   const handleShuffle = () => {
-    //TODO: add shuffle
+    dispatch(setSongIndex(getRandomSong(0, playlist.length - 1)));
   };
 
   const handleBack = () => {
-    //TODO: add handle back
+    dispatch(setSongIndex(songIndex - 1 < 0 ? songIndex : songIndex - 1));
   };
 
   const handleSkipSong = () => {
-    //TODO: add song skip
+    dispatch(
+      setSongIndex(
+        songIndex + 1 >= playlist.length ? songIndex : songIndex + 1,
+      ),
+    );
   };
 
   const handleRepeat = async () => {
@@ -102,10 +131,10 @@ const PlayerScreen = () => {
     }
 
     if (!repeat) {
-      setRepeat(true);
+      dispatch(setRepeat(true));
       await sound.setIsLoopingAsync(true);
     } else {
-      setRepeat(false);
+      dispatch(setRepeat(false));
       await sound.setIsLoopingAsync(false);
     }
   };
@@ -124,9 +153,12 @@ const PlayerScreen = () => {
 
   return (
     <View style={styles.screen}>
-      <Header iconName={iconImages.Down} title="Once Twice Melody" />
+      <Header iconName={iconImages.Down} title={playlistTitle} />
       <Image source={imageSource} style={styles.image} />
-      <SongTitle />
+      <SongTitle
+        songArtist={playlist[songIndex].artist}
+        songName={playlist[songIndex].title}
+      />
       <Slider
         maximumTrackTintColor={COLORS.white}
         maximumValue={duration}

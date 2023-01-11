@@ -7,6 +7,9 @@ import IconButton from 'components/IconButton/IconButton';
 
 import { iconImages } from 'constants/icons';
 
+import { useAppDispatch } from 'store/index';
+import { setIsWidgetShown } from 'store/playlistSlice/playlist';
+
 import AlbumImage from '../AlbumImage/AlbumImage';
 import AlbumTitle from '../AlbumTitle/AlbumTitle';
 
@@ -24,6 +27,7 @@ const AlbumInfo: FC<AlbumInfoProps> = ({
   scrollY,
 }) => {
   const { navigate } = useNavigation<SongNavigationProps>();
+  const dispacth = useAppDispatch();
   const handleHeartPress = () => {
     //TODO: add favorites albums
   };
@@ -34,6 +38,7 @@ const AlbumInfo: FC<AlbumInfoProps> = ({
 
   const handlePlayPress = () => {
     navigate(AppStackNavigationTypes.PlayerScreen);
+    dispacth(setIsWidgetShown(false));
   };
 
   return (
