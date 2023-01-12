@@ -4,13 +4,17 @@ import { responsiveHeight, responsiveWidth } from 'constants/scale';
 
 const BOTTOM = 55;
 
+const CONTAINER_WIDTH_PERCENTAGE = 100;
+
+const CONTAINER_HEIGHT_PERCENTAGE = 10;
+
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
     bottom: BOTTOM,
-    height: responsiveHeight(10),
+    height: responsiveHeight(CONTAINER_HEIGHT_PERCENTAGE),
     position: 'absolute',
-    width: responsiveWidth(100),
+    width: responsiveWidth(CONTAINER_WIDTH_PERCENTAGE),
   },
 });
 

@@ -4,6 +4,8 @@ import { COLORS } from 'constants/colors';
 import { OPEN_SANS } from 'constants/fonts';
 import { responsiveHeight } from 'constants/scale';
 
+const TITLE_CONTAINER_MARGIN_TOP_PERCENTAGE = 10;
+
 const styles = StyleSheet.create({
   artist: {
     color: COLORS.lightGray,
@@ -19,7 +21,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1.5,
     justifyContent: 'space-between',
-    marginTop: responsiveHeight(5),
+    marginTop: responsiveHeight(TITLE_CONTAINER_MARGIN_TOP_PERCENTAGE),
   },
 });
 

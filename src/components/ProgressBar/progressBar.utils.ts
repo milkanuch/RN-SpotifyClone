@@ -1,5 +1,7 @@
+import { PERCENTAGE } from 'constants/scale';
+
 export const getProgressWidth = (currentValue: number, limitValue: number) => {
   return {
-    width: `${(currentValue / limitValue) * 100}%`,
+    width: `${(currentValue / limitValue) * PERCENTAGE}%`,
   };
 };

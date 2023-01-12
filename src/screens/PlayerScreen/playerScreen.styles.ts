@@ -7,7 +7,17 @@ import {
   SCREEN_PADDING,
 } from 'constants/scale';
 
-const MARGIN = responsiveHeight(3);
+const MARGIN_PERCENTAGE = 3;
+
+const IMAGE_HEIGHT_PERCENTAGE = 50;
+
+const IMAGE_WIDTH_PERCENTAGE = 50;
+
+const SLIDER_HEIGHT_PERCENTAGE = 5;
+
+const SLIDER_WIDTH_PERCENTAGE = 98;
+
+const MARGIN = responsiveHeight(MARGIN_PERCENTAGE);
 
 const styles = StyleSheet.create({
   activeButton: {
@@ -27,9 +37,9 @@ const styles = StyleSheet.create({
   },
   image: {
     alignSelf: 'center',
-    height: responsiveHeight(50),
+    height: responsiveHeight(IMAGE_HEIGHT_PERCENTAGE),
     marginTop: MARGIN,
-    width: responsiveHeight(45),
+    width: responsiveHeight(IMAGE_WIDTH_PERCENTAGE),
   },
   playButton: {
     tintColor: COLORS.black,
@@ -47,8 +57,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: SCREEN_PADDING,
   },
   slider: {
-    height: responsiveHeight(5),
-    width: responsiveWidth(98),
+    height: responsiveHeight(SLIDER_HEIGHT_PERCENTAGE),
+    width: responsiveWidth(SLIDER_WIDTH_PERCENTAGE),
   },
 });
 

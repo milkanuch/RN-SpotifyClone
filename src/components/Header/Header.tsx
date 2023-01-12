@@ -17,7 +17,11 @@ import {
   setIsWidgetShown,
 } from 'store/playlistSlice/playlist';
 
-import { OPACITY_INPUT_RANGE, OPACITY_OUTPUT_RANGE } from './header.settings';
+import {
+  OPACITY_END_VALUE,
+  OPACITY_INPUT_RANGE,
+  OPACITY_OUTPUT_RANGE,
+} from './header.settings';
 import styles from './header.styles';
 import { AlbumHeaderProps } from './header.types';
 import { AlbumNavigationHeaderProps } from 'navigation/HomeStackNavigation/homeStackNavigation.types';
@@ -40,7 +44,7 @@ const Header: FC<AlbumHeaderProps> = ({
           extrapolateLeft: Extrapolation.CLAMP,
           extrapolateRight: Extrapolation.IDENTITY,
         })
-      : 1;
+      : OPACITY_END_VALUE;
 
     return {
       opacity,

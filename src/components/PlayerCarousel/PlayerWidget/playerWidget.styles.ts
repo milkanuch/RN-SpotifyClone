@@ -6,6 +6,8 @@ import { responsiveWidth } from 'constants/scale';
 
 const BORDER_RADIUS = 10;
 
+const CONTAINER_WIDTH_PERCENTAGE = 90;
+
 const styles = StyleSheet.create({
   buttonsContainer: {
     alignItems: 'center',
@@ -19,7 +21,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginHorizontal: 10,
     overflow: 'hidden',
-    width: responsiveWidth(95),
+    width: responsiveWidth(CONTAINER_WIDTH_PERCENTAGE),
   },
   image: {
     borderRadius: BORDER_RADIUS,

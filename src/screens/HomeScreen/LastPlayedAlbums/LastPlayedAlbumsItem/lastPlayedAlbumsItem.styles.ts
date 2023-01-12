@@ -6,6 +6,8 @@ import { responsiveWidth } from 'constants/scale';
 
 const BORDER_RADIUS = 4;
 
+const CONTAINER_WIDTH_PERCENTAGE = 46;
+
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -13,7 +15,7 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS,
     flexDirection: 'row',
     margin: 5,
-    width: responsiveWidth(46),
+    width: responsiveWidth(CONTAINER_WIDTH_PERCENTAGE),
   },
   image: {
     borderBottomLeftRadius: BORDER_RADIUS,
