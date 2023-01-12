@@ -27,6 +27,7 @@ const REACT_RULES = {
 
 const ESLINT_RULES = {
   'no-console': ERROR,
+  'no-magic-numbers': [ERROR, { ignoreArrayIndexes: true, ignore: [1, 0, -1] }],
 };
 
 const TYPESCRIPT_RULES = {
