@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { Config } from 'react-native-config';
 
 import {
@@ -8,11 +8,16 @@ import {
   AlbumResponseProps,
 } from 'types/album';
 
+const instance: AxiosInstance = axios.create({
+  baseURL: Config.API_URL,
+  headers: {
+    'Content-type': 'application/json',
+  },
+});
+
 export const getAlbums = async () => {
   try {
-    const { data } = await axios.get<AlbumResponseProps>(
-      `${Config.API_URL}/albums`,
-    );
+    const { data } = await instance.get<AlbumResponseProps>('/albums');
     return data;
   } catch {
     throw new Error('There are no albums');
@@ -21,9 +26,10 @@ export const getAlbums = async () => {
 
 export const getLastPlayedAlbums = async () => {
   try {
-    const { data } = await axios.get<LastPlayedAlbumsResponseProps[]>(
-      `${Config.API_URL}/albums/lastplayed`,
+    const { data } = await instance.get<LastPlayedAlbumsResponseProps[]>(
+      '/albums/lastplayed',
     );
+
     return data;
   } catch {
     throw new Error('There are no last played albums');
@@ -32,8 +38,8 @@ export const getLastPlayedAlbums = async () => {
 
 export const getAlbumsCategories = async () => {
   try {
-    const { data } = await axios.get<AlbumCategoriesResponseProps>(
-      `${Config.API_URL}/albums/categorized`,
+    const { data } = await instance.get<AlbumCategoriesResponseProps>(
+      '/albums/categorized',
     );
     return data;
   } catch {
@@ -43,8 +49,8 @@ export const getAlbumsCategories = async () => {
 
 export const getAlbumDetails = async () => {
   try {
-    const { data } = await axios.get<AlbumDetailResponseProps[]>(
-      `${Config.API_URL}/albums/details`,
+    const { data } = await instance.get<AlbumDetailResponseProps[]>(
+      'albums/details',
     );
     return data;
   } catch {
