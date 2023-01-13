@@ -10,15 +10,12 @@ import { iconImages } from 'constants/icons';
 
 import { useAppDispatch, useAppSelector } from 'store/index';
 import {
-  selectDuration,
-  selectIsPlaying,
   selectPlaylist,
-  selectPosition,
   selectSongIndex,
-  selectSound,
-  setIsPlaying,
   setIsWidgetShown,
 } from 'store/playlistSlice/playlist';
+
+import { song } from '../../../classes/Sound';
 
 import styles from './playerWidget.styles';
 import { PlayerWidgetProps } from './playerWidget.types';
@@ -28,12 +25,6 @@ import {
 } from 'navigation/AppStackNavigation/appStackNavigator.types';
 
 const PlayerWidget: FC<PlayerWidgetProps> = () => {
-  const sound = useAppSelector(selectSound);
-
-  const position = useAppSelector(selectPosition);
-  const duration = useAppSelector(selectDuration);
-  const isPlaying = useAppSelector(selectIsPlaying);
-
   const playlist = useAppSelector(selectPlaylist);
   const songIndex = useAppSelector(selectSongIndex);
 
@@ -50,14 +41,8 @@ const PlayerWidget: FC<PlayerWidgetProps> = () => {
     dispatch(setIsWidgetShown(false));
   };
 
-  const handlePlayPausePress = async () => {
-    if (isPlaying) {
-      await sound.pauseAsync();
-      dispatch(setIsPlaying(false));
-    } else {
-      await sound.playAsync();
-      dispatch(setIsPlaying(true));
-    }
+  const handleLikePress = () => {
+    //TODO: add favorites song
   };
 
   return (
@@ -73,19 +58,19 @@ const PlayerWidget: FC<PlayerWidgetProps> = () => {
         <View style={styles.buttonsContainer}>
           <IconButton
             iconName={iconImages.Devices}
-            onPress={handlePlayPausePress}
+            onPress={song.handlePlayPause}
           />
           <IconButton
             iconName={iconImages.StrokedHeart}
-            onPress={handlePlayPausePress}
+            onPress={handleLikePress}
           />
           <IconButton
-            iconName={isPlaying ? iconImages.Pause : iconImages.StrokePlay}
-            onPress={handlePlayPausePress}
+            iconName={song.isPlaying ? iconImages.Pause : iconImages.StrokePlay}
+            onPress={handleLikePress}
           />
         </View>
       </View>
-      <ProgressBar currentValue={position} limitValue={duration} />
+      <ProgressBar currentValue={song.position} limitValue={song.duration} />
     </TouchableOpacity>
   );
 };
