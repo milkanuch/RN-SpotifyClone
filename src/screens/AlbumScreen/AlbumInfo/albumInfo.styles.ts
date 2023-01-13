@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native';
 import { OPEN_SANS } from 'constants/fonts';
 import { SCREEN_PADDING, responsiveWidth } from 'constants/scale';
 
+const TWO_BUTTONS_WIDTH_PERCENTAGE = 15;
+
 const styles = StyleSheet.create({
   artistHeadline: {
     fontFamily: OPEN_SANS.semiBold,
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: responsiveWidth(15),
+    width: responsiveWidth(TWO_BUTTONS_WIDTH_PERCENTAGE),
   },
 });
 
