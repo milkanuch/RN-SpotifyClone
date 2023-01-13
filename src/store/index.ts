@@ -9,10 +9,6 @@ export const store = configureStore({
     playlist: playlist,
     albumDetails: albumDetails,
   },
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
 });
 
 export type AppState = ReturnType<typeof store.getState>;
