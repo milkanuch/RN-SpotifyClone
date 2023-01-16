@@ -1,4 +1,4 @@
 export interface SongTitleProps {
-  songName: string;
-  songArtist: string;
+  songName?: string;
+  songArtist?: string;
 }

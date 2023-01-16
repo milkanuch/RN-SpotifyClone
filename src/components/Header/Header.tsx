@@ -11,9 +11,11 @@ import Animated, {
 import IconButton from 'components/IconButton/IconButton';
 
 import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectIsShown, setIsWidgetShown } from 'store/playlistSlice/playlist';
-
-import { song } from '../../classes/Sound';
+import {
+  selectIsPlaying,
+  selectIsShown,
+  setIsWidgetShown,
+} from 'store/playlistSlice/playlist';
 
 import {
   OPACITY_END_VALUE,
@@ -31,6 +33,8 @@ const Header: FC<AlbumHeaderProps> = ({
   iconName,
 }) => {
   const { goBack } = useNavigation<AlbumNavigationHeaderProps>();
+
+  const isPlaying = useAppSelector(selectIsPlaying);
 
   const isWidgetShown = useAppSelector(selectIsShown);
   const dispacth = useAppDispatch();
@@ -50,7 +54,7 @@ const Header: FC<AlbumHeaderProps> = ({
 
   const handleLeftPress = () => {
     goBack();
-    if (song.isPlaying && !isWidgetShown) dispacth(setIsWidgetShown(true));
+    if (isPlaying && !isWidgetShown) dispacth(setIsWidgetShown(true));
   };
 
   return (

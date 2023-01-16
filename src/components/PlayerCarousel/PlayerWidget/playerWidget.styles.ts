@@ -6,7 +6,7 @@ import { responsiveWidth } from 'constants/scale';
 
 const BORDER_RADIUS = 10;
 
-const CONTAINER_WIDTH_PERCENTAGE = 90;
+const CONTAINER_WIDTH_PERCENTAGE = 100;
 
 const styles = StyleSheet.create({
   buttonsContainer: {
@@ -17,9 +17,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: COLORS.darkGray,
-    borderRadius: BORDER_RADIUS,
     justifyContent: 'space-around',
-    marginHorizontal: 10,
     overflow: 'hidden',
     width: responsiveWidth(CONTAINER_WIDTH_PERCENTAGE),
   },

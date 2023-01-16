@@ -1,3 +1,3 @@
 export const viewConfig = {
-  itemVisiblePercentThreshold: 60,
+  itemVisiblePercentThreshold: 30,
 };

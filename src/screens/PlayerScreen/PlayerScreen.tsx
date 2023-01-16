@@ -1,7 +1,16 @@
-import React, { useEffect } from 'react';
-import { Image, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, Image, View } from 'react-native';
 
 import Slider from '@react-native-community/slider';
+import TrackPlayer, {
+  Event,
+  RepeatMode,
+  State,
+  Track,
+  usePlaybackState,
+  useProgress,
+  useTrackPlayerEvents,
+} from 'react-native-track-player';
 
 import Header from 'components/Header/Header';
 import IconButton from 'components/IconButton/IconButton';
@@ -9,15 +18,15 @@ import IconButton from 'components/IconButton/IconButton';
 import { COLORS } from 'constants/colors';
 import { iconImages } from 'constants/icons';
 
-import { useAppSelector, useAppDispatch } from 'store/index';
+import { QueueInitialTracksService } from 'services/player/InitialTracksService';
+import { SetupService } from 'services/player/SetupService';
+import { useAppDispatch, useAppSelector } from 'store/index';
 import {
-  selectPlaylist,
-  selectSongIndex,
-  selectPlaylistTitle,
-  setSongIndex,
+  selectIsBuffering,
+  selectIsPlaying,
+  setIsBuffering,
+  setIsPlaying,
 } from 'store/playlistSlice/playlist';
-
-import { song } from '../../classes/Sound';
 
 import SongDuration from './SongDuration/SongDuration';
 import SongTitle from './SongTitle/SongTitle';
@@ -26,34 +35,83 @@ import { getRandomSong } from './playerScreen.utils';
 import styles from './playerScreen.styles';
 
 const PlayerScreen = () => {
-  const playlist = useAppSelector(selectPlaylist);
-  const songIndex = useAppSelector(selectSongIndex);
-  const playlistTitle = useAppSelector(selectPlaylistTitle);
+  const [queue, setQueue] = useState<Track[]>([]);
+
+  const [currentTrack, setCurrentTrack] = useState<number>(0);
+  const [isPlayerReady, setIsPlayerReady] = useState<boolean>(false);
+  const [isRepeat, setIsRepeat] = useState<boolean>(false);
+  const [isShuffle, setIsShuffle] = useState<boolean>(false);
+
+  const playerState = usePlaybackState();
+
+  const isBuffering = useAppSelector(selectIsBuffering);
+  const isPlaying = useAppSelector(selectIsPlaying);
+
+  const { position, duration } = useProgress();
 
   const dispatch = useAppDispatch();
 
-  const imageSource = {
-    uri: playlist[songIndex].imageUri,
-  };
+  const playerButtonIcon =
+    !isPlaying && !isBuffering ? iconImages.FilledPlay : iconImages.Pause;
+
+  const runPlayer = useCallback(async () => {
+    if (!isPlaying) {
+      const isSetup = await SetupService();
+
+      if (isSetup) {
+        await QueueInitialTracksService();
+      }
+
+      const queue = await TrackPlayer.getQueue();
+      setQueue(queue);
+
+      setIsPlayerReady(isSetup);
+    }
+  }, [isPlaying]);
 
   useEffect(() => {
-    song.playCurrentSong();
-  }, []);
+    runPlayer();
+  }, [runPlayer]);
 
-  const handleShuffle = () => {
-    dispatch(setSongIndex(getRandomSong(0, playlist.length - 1)));
+  useEffect(() => {
+    const isPlaying = playerState === State.Playing;
+    const isBuffering = playerState === State.Buffering;
+
+    dispatch(setIsPlaying(isPlaying));
+    dispatch(setIsBuffering(isBuffering));
+  }, [dispatch, playerState]);
+
+  useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
+    if (event.nextTrack) {
+      const index = await TrackPlayer.getCurrentTrack();
+      setCurrentTrack(index ? index : 0);
+    }
+  });
+
+  const handlePlayPause = () =>
+    isPlaying ? TrackPlayer.pause() : TrackPlayer.play();
+
+  const handleShuffle = () => setIsShuffle(!isShuffle);
+
+  const handleBack = () => TrackPlayer.skipToPrevious();
+
+  const handleSkipSong = () =>
+    isShuffle
+      ? TrackPlayer.skip(getRandomSong(0, queue.length - 1))
+      : TrackPlayer.skipToNext();
+
+  const handleRepeat = () => {
+    if (!isRepeat) {
+      TrackPlayer.setRepeatMode(RepeatMode.Track);
+      setIsRepeat(true);
+    } else {
+      TrackPlayer.setRepeatMode(RepeatMode.Queue);
+      setIsRepeat(false);
+    }
   };
 
-  const handleBack = () => {
-    dispatch(setSongIndex(songIndex - 1 < 0 ? songIndex : songIndex - 1));
-  };
-
-  const handleSkipSong = () => {
-    dispatch(
-      setSongIndex(
-        songIndex + 1 >= playlist.length ? songIndex : songIndex + 1,
-      ),
-    );
+  const handleChangeValue = async (value: number) => {
+    await TrackPlayer.seekTo(value);
   };
 
   const handleDevices = () => {
@@ -64,39 +122,54 @@ const PlayerScreen = () => {
     //TODO: add list playing
   };
 
-  return (
+  if (!isPlayerReady) {
+    return (
+      <ActivityIndicator color={COLORS.greenBrand} style={styles.screen} />
+    );
+  }
+
+  const imageSource =
+    typeof queue[currentTrack].artwork === 'string'
+      ? { uri: queue[currentTrack].artwork as string }
+      : { source: queue[currentTrack].artwork };
+
+  return queue[currentTrack] ? (
     <View style={styles.screen}>
-      <Header iconName={iconImages.Down} title={playlistTitle} />
+      <Header iconName={iconImages.Down} title={queue[currentTrack].album} />
       <Image source={imageSource} style={styles.image} />
       <SongTitle
-        songArtist={playlist[songIndex].artist}
-        songName={playlist[songIndex].title}
+        songArtist={queue[currentTrack].artist}
+        songName={queue[currentTrack].title}
       />
       <Slider
         maximumTrackTintColor={COLORS.white}
-        maximumValue={song.duration}
+        maximumValue={duration}
         minimumTrackTintColor={COLORS.greenBrand}
         minimumValue={0}
-        onSlidingComplete={song.handleChangeValue}
+        onSlidingComplete={handleChangeValue}
         style={styles.slider}
         thumbTintColor={COLORS.white}
-        value={song.position}
+        value={position}
       />
-      <SongDuration duration={song.duration} position={song.position} />
+      <SongDuration duration={duration} position={position} />
       <View style={styles.buttonsContainer}>
-        <IconButton iconName={iconImages.Shuffle} onPress={handleShuffle} />
+        <IconButton
+          iconName={iconImages.Shuffle}
+          iconStyle={isShuffle ? styles.activeButton : undefined}
+          onPress={handleShuffle}
+        />
         <IconButton iconName={iconImages.Back} onPress={handleBack} />
         <IconButton
           containerStyle={styles.playButtonContainer}
-          iconName={song.isPlaying ? iconImages.Pause : iconImages.FilledPlay}
+          iconName={playerButtonIcon}
           iconStyle={styles.playButton}
-          onPress={song.handlePlayPause}
+          onPress={handlePlayPause}
         />
         <IconButton iconName={iconImages.Skip} onPress={handleSkipSong} />
         <IconButton
           iconName={iconImages.Repeat}
-          iconStyle={song.isRepeat ? styles.activeButton : undefined}
-          onPress={song.handleRepeat}
+          iconStyle={isRepeat ? styles.activeButton : undefined}
+          onPress={handleRepeat}
         />
       </View>
       <View style={styles.bottomButtonContainer}>
@@ -107,7 +180,7 @@ const PlayerScreen = () => {
         />
       </View>
     </View>
-  );
+  ) : null;
 };
 
 export default PlayerScreen;

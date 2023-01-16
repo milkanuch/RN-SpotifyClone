@@ -5,11 +5,13 @@
 import { AppRegistry } from 'react-native';
 
 import ErrorBoundary from 'react-native-error-boundary';
+import TrackPlayer from 'react-native-track-player';
 import { Provider } from 'react-redux';
 
 import App from './App';
 import { name as appName } from './app.json';
 import FallBack from './src/components/FallBack/FallBack';
+import { PlaybackService } from './src/services/player/PlayBackService';
 import { store } from './src/store/index';
 
 const Root = () => {
@@ -23,3 +25,4 @@ const Root = () => {
 };
 
 AppRegistry.registerComponent(appName, () => Root);
+TrackPlayer.registerPlaybackService(() => PlaybackService);
