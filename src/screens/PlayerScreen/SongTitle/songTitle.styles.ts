@@ -2,9 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import { COLORS } from 'constants/colors';
 import { OPEN_SANS } from 'constants/fonts';
-import { responsiveHeight } from 'constants/scale';
-
-const TITLE_CONTAINER_MARGIN_TOP_PERCENTAGE = 10;
 
 const styles = StyleSheet.create({
   artist: {
@@ -18,10 +15,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   titleContainer: {
+    alignItems: 'center',
     flexDirection: 'row',
-    flex: 1.5,
+    flex: 2,
     justifyContent: 'space-between',
-    marginTop: responsiveHeight(TITLE_CONTAINER_MARGIN_TOP_PERCENTAGE),
   },
 });
 
