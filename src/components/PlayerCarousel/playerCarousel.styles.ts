@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { responsiveHeight, responsiveWidth } from 'constants/scale';
 
-const BOTTOM = 55;
+const BOTTOM = 49;
 
 const CONTAINER_WIDTH_PERCENTAGE = 100;
 

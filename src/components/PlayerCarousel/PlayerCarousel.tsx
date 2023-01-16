@@ -1,43 +1,81 @@
-import React, { useRef } from 'react';
-import { FlatList, ListRenderItem, ViewToken } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  ListRenderItem,
+  ViewToken,
+} from 'react-native';
 
-import { useAppDispatch, useAppSelector } from 'store/index';
-import { selectPlaylist, setSongIndex } from 'store/playlistSlice/playlist';
+import TrackPlayer, { Track } from 'react-native-track-player';
+
+import { COLORS } from 'constants/colors';
+import { responsiveWidth } from 'constants/scale';
 
 import PlayerWidget from './PlayerWidget/PlayerWidget';
-import { PlayerWidgetProps } from './PlayerWidget/playerWidget.types';
 
 import { viewConfig } from './playerCarousel.settings';
 import styles from './playerCarousel.styles';
 
-const keyExtractor = (item: PlayerWidgetProps) => item.id + '';
+const keyExtractor = (item: Track, index: number) => index + ' ' + item.title;
 
-const renderItem: ListRenderItem<PlayerWidgetProps> = ({ item }) => (
+const renderItem: ListRenderItem<Track> = ({ item }) => (
   <PlayerWidget
     artist={item.artist}
-    imageUri={item.imageUri}
+    artwork={item.artwork}
     title={item.title}
   />
 );
 
+const getItemLayout = (_: Track[] | null | undefined, index: number) => {
+  const ITEM_WIDTH_PERCENTAGE = 100;
+
+  return {
+    length: responsiveWidth(ITEM_WIDTH_PERCENTAGE),
+    offset: responsiveWidth(ITEM_WIDTH_PERCENTAGE) * index,
+    index,
+  };
+};
+
 const PlayerCarousel = () => {
-  const playlist = useAppSelector(selectPlaylist);
-  const dispatch = useAppDispatch();
+  const [queue, setQueue] = useState<Track[]>();
+  const [currentTrackIndex, setCurrentTrackIndex] = useState<number>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const getQueue = useCallback(async () => {
+    const currentQueue = await TrackPlayer.getQueue();
+    const currentTrack = await TrackPlayer.getCurrentTrack();
+
+    setCurrentTrackIndex(currentTrack ? currentTrack : 0);
+    setQueue(currentQueue);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getQueue();
+  }, [getQueue]);
 
   const viewConfigRef = useRef(viewConfig);
 
-  const handleViewChange = ({ changed }: { changed: ViewToken[] }) => {
+  const handleViewChange = async ({ changed }: { changed: ViewToken[] }) => {
     if (changed[0].isViewable && changed[0].index !== null) {
-      dispatch(setSongIndex(changed[0].index));
+      await TrackPlayer.skip(changed[0].index);
     }
   };
 
   const handleViewChangeRef = useRef(handleViewChange);
 
+  if (isLoading) {
+    return (
+      <ActivityIndicator color={COLORS.greenBrand} style={styles.container} />
+    );
+  }
+
   return (
     <FlatList
-      data={playlist}
+      data={queue}
+      getItemLayout={getItemLayout}
       horizontal={true}
+      initialScrollIndex={currentTrackIndex}
       keyExtractor={keyExtractor}
       onViewableItemsChanged={handleViewChangeRef.current}
       pagingEnabled={true}
