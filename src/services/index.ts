@@ -50,7 +50,7 @@ export const getAlbumsCategories = async () => {
 export const getAlbumDetails = async () => {
   try {
     const { data } = await instance.get<AlbumDetailResponseProps[]>(
-      'albums/details',
+      '/albums/details',
     );
     return data;
   } catch {
