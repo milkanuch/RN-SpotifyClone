@@ -1,3 +1,5 @@
-import { SongProps } from 'types/song';
+import { ResourceObject, Track } from 'react-native-track-player';
 
-export type PlayerWidgetProps = Omit<SongProps, 'id'> & { id?: number };
+export type PlayerWidgetProps = Omit<Track, 'url'> & {
+  url?: string | ResourceObject;
+};
