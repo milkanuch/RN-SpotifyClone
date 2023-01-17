@@ -1,5 +1,7 @@
 import { CompositeNavigationProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+
+import { PlayerProps } from 'screens/PlayerScreen/playerScreen.types';
 
 import { BottomTabProps } from 'navigation/BottomTabNavigation/bottomTabNavigation.types';
 
@@ -10,8 +12,13 @@ export enum AppStackNavigationTypes {
 
 export type AppStackNavigationParamsList = {
   [AppStackNavigationTypes.BottomTab]: undefined;
-  [AppStackNavigationTypes.PlayerScreen]: undefined;
+  [AppStackNavigationTypes.PlayerScreen]: PlayerProps;
 };
+
+export type PlayerScreenProps = StackScreenProps<
+  AppStackNavigationParamsList,
+  AppStackNavigationTypes.PlayerScreen
+>;
 
 export type SongNavigationProps = CompositeNavigationProp<
   StackNavigationProp<AppStackNavigationParamsList>,

@@ -11,7 +11,8 @@ import Header from 'components/Header/Header';
 import { iconImages } from 'constants/icons';
 
 import { selectAlbumDetails } from 'store/albumDetailsSlice/albumDetails';
-import { useAppSelector } from 'store/index';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { setSongs } from 'store/playlistSlice/playlist';
 
 import AlbumInfo from './AlbumInfo/AlbumInfo';
 import AlbumSong from './AlbumSong/AlbumSong';
@@ -25,6 +26,7 @@ import { IAlbumScreenProps } from 'navigation/HomeStackNavigation/homeStackNavig
 const AlbumScreen: FC<IAlbumScreenProps> = ({ route }) => {
   const [albumDetails, setAlbumDetails] = useState<AlbumDetailResponseProps>();
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useAppDispatch();
 
   const data = useAppSelector(selectAlbumDetails);
 
@@ -34,8 +36,13 @@ const AlbumScreen: FC<IAlbumScreenProps> = ({ route }) => {
 
   const setAlbumDetailData = useCallback(() => {
     setAlbumDetails(getAlbumDetailsById(data, id));
+
+    if (albumDetails?.songs) {
+      dispatch(setSongs(albumDetails?.songs));
+    }
+
     setIsLoading(false);
-  }, [data, id]);
+  }, [data, id, albumDetails, dispatch]);
 
   const handleScroll = useAnimatedScrollHandler(event => {
     scrollY.value = event.contentOffset.y;
@@ -73,7 +80,8 @@ const AlbumScreen: FC<IAlbumScreenProps> = ({ route }) => {
           {albumDetails.songs.map((item, index) => (
             <AlbumSong
               artist={item.artist}
-              imageUri={item.imageUri}
+              imageUri={item.artwork}
+              index={index}
               key={index}
               title={item.title}
             />

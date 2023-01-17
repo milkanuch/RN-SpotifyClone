@@ -7,8 +7,9 @@ import IconButton from 'components/IconButton/IconButton';
 
 import { iconImages } from 'constants/icons';
 
-import { useAppDispatch } from 'store/index';
-import { setIsWidgetShown } from 'store/playlistSlice/playlist';
+import { QueueInitialTracksService } from 'services/player/InitialTracksService';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { selectSongs, setIsWidgetShown } from 'store/playlistSlice/playlist';
 
 import AlbumImage from '../AlbumImage/AlbumImage';
 import AlbumTitle from '../AlbumTitle/AlbumTitle';
@@ -26,8 +27,11 @@ const AlbumInfo: FC<AlbumInfoProps> = ({
   imageUri,
   scrollY,
 }) => {
-  const { navigate } = useNavigation<SongNavigationProps>();
+  const playlist = useAppSelector(selectSongs);
   const dispacth = useAppDispatch();
+
+  const { navigate } = useNavigation<SongNavigationProps>();
+
   const handleHeartPress = () => {
     //TODO: add favorites albums
   };
@@ -36,9 +40,10 @@ const AlbumInfo: FC<AlbumInfoProps> = ({
     //TODO: add menu press
   };
 
-  const handlePlayPress = () => {
-    navigate(AppStackNavigationTypes.PlayerScreen);
+  const handlePlayPress = async () => {
     dispacth(setIsWidgetShown(false));
+    await QueueInitialTracksService(playlist);
+    navigate(AppStackNavigationTypes.PlayerScreen, {});
   };
 
   return (

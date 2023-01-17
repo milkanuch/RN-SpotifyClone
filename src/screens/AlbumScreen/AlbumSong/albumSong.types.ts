@@ -1,5 +1,6 @@
 export default interface AlbumSongProps {
-  imageUri: string;
-  artist: string;
-  title: string;
+  index?: number;
+  imageUri?: string | number;
+  artist?: string;
+  title?: string;
 }

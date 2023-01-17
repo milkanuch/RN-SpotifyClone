@@ -40,7 +40,7 @@ const PlayerWidget: FC<PlayerWidgetProps> = ({ title, artist, artwork }) => {
   };
 
   const handleWidgetPress = () => {
-    navigate(AppStackNavigationTypes.PlayerScreen);
+    navigate(AppStackNavigationTypes.PlayerScreen, {});
     dispatch(setIsWidgetShown(false));
   };
 
