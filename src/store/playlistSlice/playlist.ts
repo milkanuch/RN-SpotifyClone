@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Track } from 'react-native-track-player';
 
 import { AppState } from 'store/index';
 
@@ -9,6 +10,11 @@ const initialState: PlaylistProps = {
   isPlaying: false,
   isBuffering: false,
   currentTrack: 0,
+  songs: [
+    {
+      url: require('assets/sound/once-twice-melody.mp3'),
+    },
+  ],
 };
 
 export const playlistSlice = createSlice({
@@ -27,6 +33,9 @@ export const playlistSlice = createSlice({
     setCurrentTrack: (state, action: PayloadAction<number>) => {
       state.currentTrack = action.payload;
     },
+    setSongs: (state, action: PayloadAction<Track[]>) => {
+      state.songs = [...action.payload];
+    },
   },
 });
 
@@ -35,11 +44,14 @@ export const {
   setIsWidgetShown,
   setIsPlaying,
   setIsBuffering,
+  setSongs,
 } = playlistSlice.actions;
 
 export const selectIsShown = (state: AppState) => state.playlist.isWidgetShown;
 
 export const selectIsPlaying = (state: AppState) => state.playlist.isPlaying;
+
+export const selectSongs = (state: AppState) => state.playlist.songs;
 
 export const selectIsBuffering = (state: AppState) =>
   state.playlist.isBuffering;
