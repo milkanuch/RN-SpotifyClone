@@ -8,8 +8,9 @@ import IconButton from 'components/IconButton/IconButton';
 
 import { iconImages } from 'constants/icons';
 
-import { useAppDispatch } from 'store/index';
-import { setIsWidgetShown } from 'store/playlistSlice/playlist';
+import { QueueInitialTracksService } from 'services/player/InitialTracksService';
+import { useAppDispatch, useAppSelector } from 'store/index';
+import { selectSongs, setIsWidgetShown } from 'store/playlistSlice/playlist';
 
 import styles from './albumSong.styles';
 import AlbumSongProps from './albumSong.types';
@@ -18,21 +19,25 @@ import {
   SongNavigationProps,
 } from 'navigation/AppStackNavigation/appStackNavigator.types';
 
-const AlbumSong: FC<AlbumSongProps> = ({ imageUri, artist, title }) => {
-  const { navigate } = useNavigation<SongNavigationProps>();
+const AlbumSong: FC<AlbumSongProps> = ({ imageUri, artist, title, index }) => {
   const dispacth = useAppDispatch();
+  const playlist = useAppSelector(selectSongs);
 
-  const imageSource = {
-    uri: imageUri,
-  };
+  const { navigate } = useNavigation<SongNavigationProps>();
+
+  const imageSource =
+    typeof imageUri === 'string' ? { uri: imageUri } : { source: imageUri };
 
   const handleFavoriteSong = () => {
     //TODO: add favorite song
   };
 
-  const handleSongPlay = () => {
-    navigate(AppStackNavigationTypes.PlayerScreen);
+  const handleSongPlay = async () => {
     dispacth(setIsWidgetShown(false));
+    await QueueInitialTracksService(playlist);
+    navigate(AppStackNavigationTypes.PlayerScreen, {
+      songId: index,
+    });
   };
 
   return (

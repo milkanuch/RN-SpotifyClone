@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Image, View } from 'react-native';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, Image, Text, View } from 'react-native';
 
 import Slider from '@react-native-community/slider';
 import TrackPlayer, {
@@ -18,8 +18,6 @@ import IconButton from 'components/IconButton/IconButton';
 import { COLORS } from 'constants/colors';
 import { iconImages } from 'constants/icons';
 
-import { QueueInitialTracksService } from 'services/player/InitialTracksService';
-import { SetupService } from 'services/player/SetupService';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import {
   selectIsBuffering,
@@ -33,8 +31,9 @@ import SongTitle from './SongTitle/SongTitle';
 import { getRandomSong } from './playerScreen.utils';
 
 import styles from './playerScreen.styles';
+import { PlayerScreenProps } from 'navigation/AppStackNavigation/appStackNavigator.types';
 
-const PlayerScreen = () => {
+const PlayerScreen: FC<PlayerScreenProps> = ({ route }) => {
   const [queue, setQueue] = useState<Track[]>([]);
 
   const [currentTrack, setCurrentTrack] = useState<number>(0);
@@ -55,19 +54,15 @@ const PlayerScreen = () => {
     !isPlaying && !isBuffering ? iconImages.FilledPlay : iconImages.Pause;
 
   const runPlayer = useCallback(async () => {
-    if (!isPlaying) {
-      const isSetup = await SetupService();
-
-      if (isSetup) {
-        await QueueInitialTracksService();
-      }
-
+    if (!isPlaying && !isBuffering) {
       const queue = await TrackPlayer.getQueue();
       setQueue(queue);
+      const { songId } = route.params;
+      TrackPlayer.skip(songId ? songId : 0);
 
-      setIsPlayerReady(isSetup);
+      setIsPlayerReady(true);
     }
-  }, [isPlaying]);
+  }, [isPlaying, isBuffering, route]);
 
   useEffect(() => {
     runPlayer();
@@ -128,59 +123,66 @@ const PlayerScreen = () => {
     );
   }
 
-  const imageSource =
-    typeof queue[currentTrack].artwork === 'string'
+  const imageSource = queue[currentTrack]
+    ? typeof queue[currentTrack]?.artwork === 'string'
       ? { uri: queue[currentTrack].artwork as string }
-      : { source: queue[currentTrack].artwork };
+      : { source: queue[currentTrack].artwork }
+    : undefined;
 
-  return queue[currentTrack] ? (
-    <View style={styles.screen}>
+  return (
+    <>
       <Header iconName={iconImages.Down} title={queue[currentTrack].album} />
-      <Image source={imageSource} style={styles.image} />
-      <SongTitle
-        songArtist={queue[currentTrack].artist}
-        songName={queue[currentTrack].title}
-      />
-      <Slider
-        maximumTrackTintColor={COLORS.white}
-        maximumValue={duration}
-        minimumTrackTintColor={COLORS.greenBrand}
-        minimumValue={0}
-        onSlidingComplete={handleChangeValue}
-        style={styles.slider}
-        thumbTintColor={COLORS.white}
-        value={position}
-      />
-      <SongDuration duration={duration} position={position} />
-      <View style={styles.buttonsContainer}>
-        <IconButton
-          iconName={iconImages.Shuffle}
-          iconStyle={isShuffle ? styles.activeButton : undefined}
-          onPress={handleShuffle}
-        />
-        <IconButton iconName={iconImages.Back} onPress={handleBack} />
-        <IconButton
-          containerStyle={styles.playButtonContainer}
-          iconName={playerButtonIcon}
-          iconStyle={styles.playButton}
-          onPress={handlePlayPause}
-        />
-        <IconButton iconName={iconImages.Skip} onPress={handleSkipSong} />
-        <IconButton
-          iconName={iconImages.Repeat}
-          iconStyle={isRepeat ? styles.activeButton : undefined}
-          onPress={handleRepeat}
-        />
-      </View>
-      <View style={styles.bottomButtonContainer}>
-        <IconButton iconName={iconImages.Devices} onPress={handleDevices} />
-        <IconButton
-          iconName={iconImages.ListPlaying}
-          onPress={handleListPlaying}
-        />
-      </View>
-    </View>
-  ) : null;
+      {queue[currentTrack] ? (
+        <View style={styles.screen}>
+          <Image source={imageSource} style={styles.image} />
+          <SongTitle
+            songArtist={queue[currentTrack].artist}
+            songName={queue[currentTrack].title}
+          />
+          <Slider
+            maximumTrackTintColor={COLORS.white}
+            maximumValue={duration}
+            minimumTrackTintColor={COLORS.greenBrand}
+            minimumValue={0}
+            onSlidingComplete={handleChangeValue}
+            style={styles.slider}
+            thumbTintColor={COLORS.white}
+            value={position}
+          />
+          <SongDuration duration={duration} position={position} />
+          <View style={styles.buttonsContainer}>
+            <IconButton
+              iconName={iconImages.Shuffle}
+              iconStyle={isShuffle ? styles.activeButton : undefined}
+              onPress={handleShuffle}
+            />
+            <IconButton iconName={iconImages.Back} onPress={handleBack} />
+            <IconButton
+              containerStyle={styles.playButtonContainer}
+              iconName={playerButtonIcon}
+              iconStyle={styles.playButton}
+              onPress={handlePlayPause}
+            />
+            <IconButton iconName={iconImages.Skip} onPress={handleSkipSong} />
+            <IconButton
+              iconName={iconImages.Repeat}
+              iconStyle={isRepeat ? styles.activeButton : undefined}
+              onPress={handleRepeat}
+            />
+          </View>
+          <View style={styles.bottomButtonContainer}>
+            <IconButton iconName={iconImages.Devices} onPress={handleDevices} />
+            <IconButton
+              iconName={iconImages.ListPlaying}
+              onPress={handleListPlaying}
+            />
+          </View>
+        </View>
+      ) : (
+        <Text>Something went wrong</Text>
+      )}
+    </>
+  );
 };
 
 export default PlayerScreen;
