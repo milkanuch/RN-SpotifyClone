@@ -3,11 +3,9 @@ import TrackPlayer, {
   Capability,
 } from 'react-native-track-player';
 
-export const SetupService = async (): Promise<boolean> => {
-  let isSetup = false;
+export const SetupService = async (): Promise<void> => {
   try {
     await TrackPlayer.getCurrentTrack();
-    isSetup = true;
   } catch {
     await TrackPlayer.setupPlayer();
     await TrackPlayer.updateOptions({
@@ -30,10 +28,5 @@ export const SetupService = async (): Promise<boolean> => {
       ],
       progressUpdateEventInterval: 2,
     });
-
-    isSetup = true;
-  } finally {
-    // eslint-disable-next-line no-unsafe-finally
-    return isSetup;
   }
 };
