@@ -1,8 +1,8 @@
 import { SharedValue } from 'react-native-reanimated';
 
 export interface AlbumInfoProps {
+  id: number;
   artistHeadline: string;
-  likes: number;
   name: string;
   imageUri: string;
   scrollY: SharedValue<number>;
