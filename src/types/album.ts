@@ -27,3 +27,7 @@ export interface AlbumCategoriesResponseProps {
   title: string;
   albums: AlbumResponseProps[];
 }
+
+export interface LikedAlbumProps extends AlbumResponseProps {
+  name: string;
+}

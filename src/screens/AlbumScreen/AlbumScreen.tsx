@@ -72,8 +72,8 @@ const AlbumScreen: FC<IAlbumScreenProps> = ({ route }) => {
         <>
           <AlbumInfo
             artistHeadline={albumDetails.artistsHeadline}
+            id={id}
             imageUri={albumDetails.imageUri}
-            likes={albumDetails.numberOfLikes}
             name={albumDetails.name}
             scrollY={scrollY}
           />
