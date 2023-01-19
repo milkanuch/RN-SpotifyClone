@@ -13,6 +13,8 @@ import { responsiveWidth } from 'constants/scale';
 
 import PlayerWidget from './PlayerWidget/PlayerWidget';
 
+import { Maybe } from 'types/maybe';
+
 import { viewConfig } from './playerCarousel.settings';
 import styles from './playerCarousel.styles';
 
@@ -26,7 +28,7 @@ const renderItem: ListRenderItem<Track> = ({ item }) => (
   />
 );
 
-const getItemLayout = (_: Track[] | null | undefined, index: number) => {
+const getItemLayout = (_: Maybe<Track[]> | null, index: number) => {
   const ITEM_WIDTH_PERCENTAGE = 100;
 
   return {
