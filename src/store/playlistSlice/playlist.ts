@@ -10,11 +10,7 @@ const initialState: PlaylistProps = {
   isPlaying: false,
   isBuffering: false,
   currentTrack: 0,
-  songs: [
-    {
-      url: require('assets/sound/once-twice-melody.mp3'),
-    },
-  ],
+  songs: [],
 };
 
 export const playlistSlice = createSlice({
@@ -48,7 +44,6 @@ export const {
 } = playlistSlice.actions;
 
 export const selectIsShown = (state: AppState) => state.playlist.isWidgetShown;
-
 export const selectIsPlaying = (state: AppState) => state.playlist.isPlaying;
 
 export const selectSongs = (state: AppState) => state.playlist.songs;
