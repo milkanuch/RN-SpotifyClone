@@ -8,11 +8,18 @@ import IconButton from 'components/IconButton/IconButton';
 import { iconImages } from 'constants/icons';
 
 import { QueueInitialTracksService } from 'services/player/InitialTracksService';
+import {
+  removeLikedAlbum,
+  selectFavoriteAlbumById,
+  setLikedAlbum,
+} from 'store/favoriteAlbumsSlice/favoriteAlbums';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectSongs, setIsWidgetShown } from 'store/playlistSlice/playlist';
 
 import AlbumImage from '../AlbumImage/AlbumImage';
 import AlbumTitle from '../AlbumTitle/AlbumTitle';
+
+import { LikedAlbumProps } from 'types/album';
 
 import styles from './albumInfo.styles';
 import { AlbumInfoProps } from './albumInfo.types';
@@ -22,6 +29,7 @@ import {
 } from 'navigation/AppStackNavigation/appStackNavigator.types';
 
 const AlbumInfo: FC<AlbumInfoProps> = ({
+  id,
   name,
   artistHeadline,
   imageUri,
@@ -30,10 +38,26 @@ const AlbumInfo: FC<AlbumInfoProps> = ({
   const playlist = useAppSelector(selectSongs);
   const dispacth = useAppDispatch();
 
+  const isLiked = useAppSelector(selectFavoriteAlbumById(id));
+
+  const iconName = isLiked ? iconImages.FilledHeart : iconImages.StrokedHeart;
+
   const { navigate } = useNavigation<SongNavigationProps>();
 
-  const handleHeartPress = () => {
-    //TODO: add favorites albums
+  const handleLikePress = () => {
+    const likedAlbum: LikedAlbumProps = {
+      id,
+      name,
+      artistHeadline,
+      imageUri,
+    };
+
+    if (isLiked) {
+      dispacth(removeLikedAlbum(id));
+      return;
+    }
+
+    dispacth(setLikedAlbum(likedAlbum));
   };
 
   const handleMenuPress = () => {
@@ -57,8 +81,9 @@ const AlbumInfo: FC<AlbumInfoProps> = ({
       <View style={styles.buttonContainer}>
         <View style={styles.twoButtonContainer}>
           <IconButton
-            iconName={iconImages.StrokedHeart}
-            onPress={handleHeartPress}
+            iconName={iconName}
+            iconStyle={isLiked ? styles.activeButton : undefined}
+            onPress={handleLikePress}
           />
           <IconButton
             iconName={iconImages.MenuDots}
