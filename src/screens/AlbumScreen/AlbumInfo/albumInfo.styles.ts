@@ -1,11 +1,15 @@
 import { StyleSheet } from 'react-native';
 
+import { COLORS } from 'constants/colors';
 import { OPEN_SANS } from 'constants/fonts';
 import { SCREEN_PADDING, responsiveWidth } from 'constants/scale';
 
 const TWO_BUTTONS_WIDTH_PERCENTAGE = 15;
 
 const styles = StyleSheet.create({
+  activeButton: {
+    tintColor: COLORS.greenBrand,
+  },
   artistHeadline: {
     fontFamily: OPEN_SANS.semiBold,
     fontSize: 18,
