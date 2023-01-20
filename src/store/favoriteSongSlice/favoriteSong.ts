@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Track } from 'react-native-track-player';
 
 import { AppState } from 'store/index';
 
@@ -15,7 +14,7 @@ export const handleLike = createAsyncThunk<
   void,
   SongProps,
   { state: AppState }
->('favoriteSong/likes', async (item, { dispatch, getState }) => {
+>('FavoriteSong/likes', async (item, { dispatch, getState }) => {
   try {
     const state = getState();
     const isLiked = selectIsSongLikedById(item.id)(state);
@@ -32,10 +31,10 @@ export const handleLike = createAsyncThunk<
 });
 
 const favoriteSong = createSlice({
-  name: 'favoriteSong',
+  name: 'FavoriteSong',
   initialState,
   reducers: {
-    setLikedSong: (state, action: PayloadAction<Track>) => {
+    setLikedSong: (state, action: PayloadAction<SongProps>) => {
       state.favoritesSongs.push(action.payload);
     },
     removeLikedSong: (state, action: PayloadAction<number>) => {
