@@ -1,4 +1,4 @@
-import { Track } from 'react-native-track-player';
+import { SongProps } from './song';
 
 export interface AlbumResponseProps {
   id: number;
@@ -19,7 +19,7 @@ export interface AlbumDetailResponseProps {
   numberOfLikes: number;
   imageUri: string;
   artistsHeadline: string;
-  songs: Track[];
+  songs: SongProps[];
 }
 
 export interface AlbumCategoriesResponseProps {
