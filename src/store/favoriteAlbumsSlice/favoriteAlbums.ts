@@ -11,7 +11,7 @@ const initialState: FavoriteAlbumsState = {
 };
 
 const favoriteAlbums = createSlice({
-  name: 'favoriteAlbums',
+  name: 'FavoriteAlbums',
   initialState,
   reducers: {
     setLikedAlbum: (state, action: PayloadAction<LikedAlbumProps>) => {
@@ -30,8 +30,6 @@ export const { setLikedAlbum, removeLikedAlbum } = favoriteAlbums.actions;
 export const selectFavoriteAlbumById =
   (id: number) =>
   (state: AppState): boolean =>
-    state.favoriteAlbums.favoritesAlbums
-      ? !!state.favoriteAlbums.favoritesAlbums.find(item => item.id === id)
-      : false;
+    !!state.favoriteAlbums.favoritesAlbums.find(item => item.id === id);
 
 export default favoriteAlbums.reducer;
