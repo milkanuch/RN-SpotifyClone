@@ -4,6 +4,9 @@ import { COLORS } from 'constants/colors';
 import { OPEN_SANS } from 'constants/fonts';
 
 const styles = StyleSheet.create({
+  activeButton: {
+    tintColor: COLORS.greenBrand,
+  },
   artist: {
     color: COLORS.lightGray,
     fontFamily: OPEN_SANS.semiBold,
