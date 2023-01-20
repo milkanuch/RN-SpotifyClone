@@ -50,6 +50,6 @@ export const { setLikedSong, removeLikedSong } = favoriteSong.actions;
 export const selectIsSongLikedById =
   (id: number | undefined) =>
   (state: AppState): boolean =>
-    !!state.favoriteSongs.favoritesSongs.find(item => item.id === id);
+    !!state.favoriteSong.favoritesSongs.find(item => item.id === id);
 
 export default favoriteSong.reducer;
