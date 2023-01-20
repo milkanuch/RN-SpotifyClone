@@ -43,8 +43,8 @@ const AlbumImage: FC<AlbumImageProps> = ({ imageUri, scrollY }) => {
     );
 
     return {
-      transform: [{ scale: scale }],
-      opacity: opacity,
+      transform: [{ scale }],
+      opacity,
     };
   });
 
