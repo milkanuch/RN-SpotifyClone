@@ -9,6 +9,10 @@ import IconButton from 'components/IconButton/IconButton';
 import { iconImages } from 'constants/icons';
 
 import { QueueInitialTracksService } from 'services/player/InitialTracksService';
+import {
+  handleLike,
+  selectIsSongLikedById,
+} from 'store/favoriteSongSlice/favoriteSong';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import { selectSongs, setIsWidgetShown } from 'store/playlistSlice/playlist';
 
@@ -19,25 +23,39 @@ import {
   SongNavigationProps,
 } from 'navigation/AppStackNavigation/appStackNavigator.types';
 
-const AlbumSong: FC<AlbumSongProps> = ({ imageUri, artist, title, index }) => {
-  const dispacth = useAppDispatch();
+const AlbumSong: FC<AlbumSongProps> = ({
+  imageUri,
+  artist,
+  title,
+  trackIndex,
+  id,
+  url,
+}) => {
+  const dispatch = useAppDispatch();
   const playlist = useAppSelector(selectSongs);
 
   const { navigate } = useNavigation<SongNavigationProps>();
 
+  const isLiked = useAppSelector(selectIsSongLikedById(id));
+
   const imageSource =
     typeof imageUri === 'string' ? { uri: imageUri } : { source: imageUri };
 
-  const handleFavoriteSong = () => {
-    //TODO: add favorite song
-  };
+  const iconStyle = isLiked ? styles.activeButton : undefined;
+
+  const iconName = isLiked ? iconImages.FilledHeart : iconImages.StrokedHeart;
 
   const handleSongPlay = async () => {
-    dispacth(setIsWidgetShown(false));
+    dispatch(setIsWidgetShown(false));
     await QueueInitialTracksService(playlist);
     navigate(AppStackNavigationTypes.PlayerScreen, {
-      songId: index,
+      trackIndex,
     });
+  };
+
+  const handleLikeSong = async () => {
+    const item = { artist, id, imageUri, title, url };
+    await dispatch(handleLike(item));
   };
 
   return (
@@ -51,8 +69,9 @@ const AlbumSong: FC<AlbumSongProps> = ({ imageUri, artist, title, index }) => {
       </TouchableOpacity>
       <IconButton
         containerStyle={styles.favorites}
-        iconName={iconImages.StrokedHeart}
-        onPress={handleFavoriteSong}
+        iconName={iconName}
+        iconStyle={iconStyle}
+        onPress={handleLikeSong}
       />
     </View>
   );

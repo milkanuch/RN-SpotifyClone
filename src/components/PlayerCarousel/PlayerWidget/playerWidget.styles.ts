@@ -9,6 +9,9 @@ const BORDER_RADIUS = 10;
 const CONTAINER_WIDTH_PERCENTAGE = 100;
 
 const styles = StyleSheet.create({
+  activeButton: {
+    tintColor: COLORS.greenBrand,
+  },
   buttonsContainer: {
     alignItems: 'center',
     flexDirection: 'row',

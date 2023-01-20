@@ -9,46 +9,65 @@ import ProgressBar from 'components/ProgressBar/ProgressBar';
 
 import { iconImages } from 'constants/icons';
 
+import {
+  handleLike,
+  selectIsSongLikedById,
+} from 'store/favoriteSongSlice/favoriteSong';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import {
   selectIsBuffering,
   selectIsPlaying,
+  setIsPlaying,
   setIsWidgetShown,
 } from 'store/playlistSlice/playlist';
 
+import { SongProps } from 'types/song';
+
 import styles from './playerWidget.styles';
-import { PlayerWidgetProps } from './playerWidget.types';
 import {
   AppStackNavigationTypes,
   SongNavigationProps,
 } from 'navigation/AppStackNavigation/appStackNavigator.types';
 
-const PlayerWidget: FC<PlayerWidgetProps> = ({ title, artist, artwork }) => {
+const PlayerWidget: FC<SongProps> = ({ title, artist, artwork, id, url }) => {
   const { navigate } = useNavigation<SongNavigationProps>();
 
   const { position, duration } = useProgress();
   const isBuffering = useAppSelector(selectIsBuffering);
   const isPlaying = useAppSelector(selectIsPlaying);
+  const isLiked = useAppSelector(selectIsSongLikedById(id));
+
+  const dispatch = useAppDispatch();
 
   const playerButtonIcon =
     !isPlaying && !isBuffering ? iconImages.FilledPlay : iconImages.Pause;
 
-  const dispatch = useAppDispatch();
+  const imageSource =
+    typeof artwork === 'string' ? { uri: artwork } : { source: artwork };
 
-  const imageSource = {
-    uri: artwork,
-  };
+  const iconName = isLiked ? iconImages.FilledHeart : iconImages.StrokedHeart;
+
+  const iconStyle = isLiked ? styles.activeButton : undefined;
 
   const handleWidgetPress = () => {
     navigate(AppStackNavigationTypes.PlayerScreen, {});
     dispatch(setIsWidgetShown(false));
   };
 
-  const handlePlayPause = () =>
-    isPlaying ? TrackPlayer.pause() : TrackPlayer.play();
+  const handlePlayPause = async () => {
+    if (isPlaying) {
+      await TrackPlayer.pause();
+      dispatch(setIsPlaying(false));
+      return;
+    }
 
-  const handleLikePress = () => {
-    //TODO: add favorites song
+    await TrackPlayer.play();
+    dispatch(setIsPlaying(true));
+  };
+
+  const handleLikeSong = async () => {
+    const item = { artist, id, artwork, title, url };
+    await dispatch(handleLike(item));
   };
 
   return (
@@ -65,8 +84,9 @@ const PlayerWidget: FC<PlayerWidgetProps> = ({ title, artist, artwork }) => {
         <View style={styles.buttonsContainer}>
           <IconButton iconName={iconImages.Devices} onPress={handlePlayPause} />
           <IconButton
-            iconName={iconImages.StrokedHeart}
-            onPress={handleLikePress}
+            iconName={iconName}
+            iconStyle={iconStyle}
+            onPress={handleLikeSong}
           />
           <IconButton iconName={playerButtonIcon} onPress={handlePlayPause} />
         </View>

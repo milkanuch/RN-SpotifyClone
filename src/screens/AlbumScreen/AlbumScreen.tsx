@@ -26,6 +26,7 @@ import { IAlbumScreenProps } from 'navigation/HomeStackNavigation/homeStackNavig
 const AlbumScreen: FC<IAlbumScreenProps> = ({ route }) => {
   const [albumDetails, setAlbumDetails] = useState<AlbumDetailResponseProps>();
   const [isLoading, setIsLoading] = useState(true);
+
   const dispatch = useAppDispatch();
 
   const data = useAppSelector(selectAlbumDetails);
@@ -80,10 +81,12 @@ const AlbumScreen: FC<IAlbumScreenProps> = ({ route }) => {
           {albumDetails.songs.map((item, index) => (
             <AlbumSong
               artist={item.artist}
+              id={item.id}
               imageUri={item.artwork}
-              index={index}
               key={index}
               title={item.title}
+              trackIndex={index}
+              url={item.url}
             />
           ))}
         </>

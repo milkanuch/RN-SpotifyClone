@@ -6,7 +6,6 @@ import TrackPlayer, {
   Event,
   RepeatMode,
   State,
-  Track,
   usePlaybackState,
   useProgress,
   useTrackPlayerEvents,
@@ -18,6 +17,7 @@ import IconButton from 'components/IconButton/IconButton';
 import { COLORS } from 'constants/colors';
 import { iconImages } from 'constants/icons';
 
+import { handleLike } from 'store/favoriteSongSlice/favoriteSong';
 import { useAppDispatch, useAppSelector } from 'store/index';
 import {
   selectIsBuffering,
@@ -30,11 +30,13 @@ import SongDuration from './SongDuration/SongDuration';
 import SongTitle from './SongTitle/SongTitle';
 import { getRandomSong } from './playerScreen.utils';
 
+import { SongProps } from 'types/song';
+
 import styles from './playerScreen.styles';
 import { PlayerScreenProps } from 'navigation/AppStackNavigation/appStackNavigator.types';
 
 const PlayerScreen: FC<PlayerScreenProps> = ({ route }) => {
-  const [queue, setQueue] = useState<Track[]>([]);
+  const [queue, setQueue] = useState<SongProps[]>([]);
 
   const [currentTrack, setCurrentTrack] = useState<number>(0);
   const [isPlayerReady, setIsPlayerReady] = useState<boolean>(false);
@@ -57,8 +59,8 @@ const PlayerScreen: FC<PlayerScreenProps> = ({ route }) => {
     if (!isPlaying && !isBuffering) {
       const queue = await TrackPlayer.getQueue();
       setQueue(queue);
-      const { songId } = route.params;
-      TrackPlayer.skip(songId ? songId : 0);
+      const { trackIndex } = route.params;
+      TrackPlayer.skip(trackIndex ? trackIndex : 0);
 
       setIsPlayerReady(true);
     }
@@ -109,6 +111,18 @@ const PlayerScreen: FC<PlayerScreenProps> = ({ route }) => {
     await TrackPlayer.seekTo(value);
   };
 
+  const handleLikeSong = async () => {
+    const item = {
+      artist: queue[currentTrack].artist,
+      id: queue[currentTrack].id,
+      artwork: queue[currentTrack].artwork,
+      title: queue[currentTrack].title,
+      url: queue[currentTrack].url,
+    };
+
+    await dispatch(handleLike(item));
+  };
+
   const handleDevices = () => {
     //TODO: add handle devices
   };
@@ -123,11 +137,10 @@ const PlayerScreen: FC<PlayerScreenProps> = ({ route }) => {
     );
   }
 
-  const imageSource = queue[currentTrack]
-    ? typeof queue[currentTrack]?.artwork === 'string'
+  const imageSource =
+    queue[currentTrack] && typeof queue[currentTrack]?.artwork === 'string'
       ? { uri: queue[currentTrack].artwork as string }
-      : { source: queue[currentTrack].artwork }
-    : undefined;
+      : { source: queue[currentTrack].artwork };
 
   return (
     <>
@@ -136,7 +149,9 @@ const PlayerScreen: FC<PlayerScreenProps> = ({ route }) => {
         <View style={styles.screen}>
           <Image source={imageSource} style={styles.image} />
           <SongTitle
+            onPress={handleLikeSong}
             songArtist={queue[currentTrack].artist}
+            songId={queue[currentTrack].id}
             songName={queue[currentTrack].title}
           />
           <Slider
