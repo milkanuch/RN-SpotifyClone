@@ -31,7 +31,7 @@ export const playlistSlice = createSlice({
       state.currentTrack = action.payload;
     },
     setSongs: (state, action: PayloadAction<SongProps[]>) => {
-      state.songs = [...action.payload];
+      state.songs.push(...action.payload);
     },
   },
 });
