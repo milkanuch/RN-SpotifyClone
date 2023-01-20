@@ -1,17 +1,20 @@
-import TrackPlayer, { RepeatMode, Track } from 'react-native-track-player';
+import TrackPlayer, { RepeatMode } from 'react-native-track-player';
+
+import { SongProps } from 'types/song';
 
 export const QueueInitialTracksService = async (
-  playlist: Track[],
+  playlist: SongProps[],
 ): Promise<void> => {
   TrackPlayer.reset();
 
   await TrackPlayer.add(
-    playlist.map((item: Track): Track => {
+    playlist.map((item: SongProps): SongProps => {
       return {
         url: item.url,
         artist: item.artist,
         artwork: item.artwork,
         title: item.title,
+        id: item.id,
       };
     }),
   );
