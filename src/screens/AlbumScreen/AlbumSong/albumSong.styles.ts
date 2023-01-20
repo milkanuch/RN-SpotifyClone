@@ -7,6 +7,9 @@ const PADDING_HORIZONTAL = 10;
 const BORDER_RADIUS = 5;
 
 const styles = StyleSheet.create({
+  activeButton: {
+    tintColor: COLORS.greenBrand,
+  },
   artist: {
     color: COLORS.lightGray,
     fontFamily: OPEN_SANS.regular,

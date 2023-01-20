@@ -14,17 +14,20 @@ import { responsiveWidth } from 'constants/scale';
 import PlayerWidget from './PlayerWidget/PlayerWidget';
 
 import { Maybe } from 'types/maybe';
+import { SongProps } from 'types/song';
 
 import { viewConfig } from './playerCarousel.settings';
 import styles from './playerCarousel.styles';
 
 const keyExtractor = (item: Track, index: number) => index + ' ' + item.title;
 
-const renderItem: ListRenderItem<Track> = ({ item }) => (
+const renderItem: ListRenderItem<SongProps> = ({ item }) => (
   <PlayerWidget
     artist={item.artist}
     artwork={item.artwork}
+    id={item.id}
     title={item.title}
+    url={item.url}
   />
 );
 
@@ -39,7 +42,7 @@ const getItemLayout = (_: Maybe<Track[]> | null, index: number) => {
 };
 
 const PlayerCarousel = () => {
-  const [queue, setQueue] = useState<Track[]>();
+  const [queue, setQueue] = useState<SongProps[]>();
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 

@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Track } from 'react-native-track-player';
 
 import { AppState } from 'store/index';
+
+import { SongProps } from 'types/song';
 
 import { PlaylistProps } from './playlist.types';
 
@@ -29,7 +30,7 @@ export const playlistSlice = createSlice({
     setCurrentTrack: (state, action: PayloadAction<number>) => {
       state.currentTrack = action.payload;
     },
-    setSongs: (state, action: PayloadAction<Track[]>) => {
+    setSongs: (state, action: PayloadAction<SongProps[]>) => {
       state.songs = [...action.payload];
     },
   },

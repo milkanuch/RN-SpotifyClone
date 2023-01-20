@@ -1,9 +1,9 @@
-import { Track } from 'react-native-track-player';
+import { SongProps } from 'types/song';
 
 export interface PlaylistProps {
   isWidgetShown: boolean;
   isPlaying: boolean;
   isBuffering: boolean;
   currentTrack: number;
-  songs: Track[];
+  songs: SongProps[];
 }
