@@ -4,9 +4,9 @@ import { AppState } from 'store/index';
 
 import { SongProps } from 'types/song';
 
-import { PlaylistProps } from './playlist.types';
+import { PlaylistState } from './playlist.types';
 
-const initialState: PlaylistProps = {
+const initialState: PlaylistState = {
   isWidgetShown: false,
   isPlaying: false,
   isBuffering: false,
@@ -45,12 +45,13 @@ export const {
 } = playlistSlice.actions;
 
 export const selectIsShown = (state: AppState) => state.playlist.isWidgetShown;
-export const selectIsPlaying = (state: AppState) => state.playlist.isPlaying;
 
-export const selectSongs = (state: AppState) => state.playlist.songs;
+export const selectIsPlaying = (state: AppState) => state.playlist.isPlaying;
 
 export const selectIsBuffering = (state: AppState) =>
   state.playlist.isBuffering;
+
+export const selectSongs = (state: AppState) => state.playlist.songs;
 
 export const selectCurrentTrack = (state: AppState) =>
   state.playlist.currentTrack;
