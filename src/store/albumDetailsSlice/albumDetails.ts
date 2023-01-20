@@ -27,4 +27,5 @@ export const { setAlbumDetails } = albumDetails.actions;
 
 export const selectAlbumDetails = (state: AppState) =>
   state.albumDetails.details;
+
 export default albumDetails.reducer;

@@ -1,6 +1,6 @@
 import { SongProps } from 'types/song';
 
-export interface PlaylistProps {
+export interface PlaylistState {
   isWidgetShown: boolean;
   isPlaying: boolean;
   isBuffering: boolean;
