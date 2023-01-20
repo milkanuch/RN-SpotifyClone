@@ -18,7 +18,7 @@ import { rootReducer } from './reducers';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['playlist', 'albumDetails'],
+  blacklist: ['playlist', 'albumDetails'],
   storeReconciler: autoMergeLevel2,
 };
 
