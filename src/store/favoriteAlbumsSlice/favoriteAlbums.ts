@@ -27,7 +27,7 @@ const favoriteAlbums = createSlice({
 
 export const { setLikedAlbum, removeLikedAlbum } = favoriteAlbums.actions;
 
-export const selectFavoriteAlbumById =
+export const selectIsAlbumLikedById =
   (id: number) =>
   (state: AppState): boolean =>
     !!state.favoriteAlbums.favoritesAlbums.find(item => item.id === id);

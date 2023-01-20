@@ -10,7 +10,7 @@ import { iconImages } from 'constants/icons';
 import { QueueInitialTracksService } from 'services/player/InitialTracksService';
 import {
   removeLikedAlbum,
-  selectFavoriteAlbumById,
+  selectIsAlbumLikedById,
   setLikedAlbum,
 } from 'store/favoriteAlbumsSlice/favoriteAlbums';
 import { useAppDispatch, useAppSelector } from 'store/index';
@@ -38,7 +38,7 @@ const AlbumInfo: FC<AlbumInfoProps> = ({
   const playlist = useAppSelector(selectSongs);
   const dispacth = useAppDispatch();
 
-  const isLiked = useAppSelector(selectFavoriteAlbumById(id));
+  const isLiked = useAppSelector(selectIsAlbumLikedById(id));
 
   const iconName = isLiked ? iconImages.FilledHeart : iconImages.StrokedHeart;
 
